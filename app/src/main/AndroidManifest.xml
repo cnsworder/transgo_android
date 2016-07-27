@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.kaola.qrcodescanner"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cnsworder.qrcodescanner">
+
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -10,19 +12,32 @@
     <uses-feature
         android:name="android.hardware.camera.flash"
         android:required="false" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".qrcode.QrCodeActivity">
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:screenOrientation="portrait">
+        <activity android:name="com.cnsworder.transgo.SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".qrcode.QrCodeActivity" />
+        <activity android:name=".qrcode.OrderPostActivity" />
+        <activity android:name=".qrcode.OrderCheckActivity" />
+        <activity android:name=".qrcode.OrderExtCheckActivity" />
+        <activity android:name="com.cnsworder.transgo.TransgoMainActivity" />
+        <activity android:name="com.cnsworder.transgo.About"></activity>
+        <activity android:name="com.cnsworder.transgo.CameraView"></activity>
+        <activity
+            android:name="com.cnsworder.transgo.CheckinActivity"
+            android:label="@string/title_activity_checkin"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>

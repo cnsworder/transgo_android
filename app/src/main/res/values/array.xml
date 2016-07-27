@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="water">
+		<item>多</item>
+		<item>中</item>
+		<item>少</item>
+	</string-array>
+	<string-array name="status">
+	</string-array>
+	<string-array name="feedback">
+		<item>无</item>
+		<item>有</item>
+	</string-array>
+
+	<string-array name="transformer_type">
+		<item>正常</item>
+		<item>不正常</item>
+	</string-array>
+	<string-array name="water_color">
+	</string-array>
+	<string-array name="menuarray">
+		<item>普通揽件</item>
+		<item>正常签收</item>
+		<item>异常签收</item>
+		<item>分发功能</item>
+		<item>关于我们</item>
+	</string-array>
+	<string-array name="date_number">
+		<item>7</item>
+		<item>14</item>
+		<item>21</item>
+		<item>28</item>
+	</string-array>
+	<string-array name="surgery_type">
+
+	</string-array>
+	<string-array name="a_type">
+
+	</string-array>
+	
+	<string-array name="kickback_type">
+
+	</string-array>
+
+	<string-array name="a_kickback">
+
+	</string-array>
+
+	<string-array name="b_kickback">
+
+		<item>其他</item>
+	</string-array>
+
+	<string-array name="c_kickback">
+		<item>其他</item>
+	</string-array>
+
+	<string-array name="d_kickback">
+
+	</string-array>
+
+	<string-array name="e_kickback">
+
+		<item>其他</item>
+	</string-array>
+
+	<string-array name="f_kickback">
+
+		<item>未使用</item>
+		<item>其他</item>
+	</string-array>
+
+</resources>

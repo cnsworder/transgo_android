@@ -81,7 +81,7 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="271dp"
+                android:layout_width="287dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout android:layout_height="wrap_content"
@@ -108,54 +108,28 @@
                         android:inputType="number"
                         android:ellipsize="start" />
                 </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="派送员"
-                        android:id="@+id/textView3"
-                        android:textColor="@color/abc_secondary_text_material_light"
-                        android:textSize="18dp" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/exp_id"
-                        android:hint="派送员"
-                        android:textColor="#080808"
-                        android:textColorHint="#696666"
-                        android:backgroundTint="#f59d03"
-                        android:editable="true"
-                        android:inputType="number"
-                        android:ellipsize="middle" />
-                </LinearLayout>
             </LinearLayout>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="分派"
-                android:id="@+id/qr_post_button"
+                android:text="@string/check"
+                android:id="@+id/check_button"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scrollView"
             android:fillViewport="true"
-            android:background="#4a4949">
+            android:id="@+id/scrollView" >
 
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/qr_order_list_view" />
+                android:id="@+id/order_list_view" />
         </ScrollView>
+
     </LinearLayout>
 
 </RelativeLayout>

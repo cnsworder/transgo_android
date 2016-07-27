@@ -81,7 +81,7 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="271dp"
+                android:layout_width="275dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout android:layout_height="wrap_content"
@@ -140,22 +140,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="分派"
-                android:id="@+id/qr_post_button"
+                android:id="@+id/post_button"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scrollView"
             android:fillViewport="true"
-            android:background="#4a4949">
+            android:id="@+id/scrollView" >
 
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/qr_order_list_view" />
+                android:id="@+id/post_order_list_view" />
         </ScrollView>
+
     </LinearLayout>
 
 </RelativeLayout>
