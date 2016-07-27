@@ -15,6 +15,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.text.TextUtils;
+import android.util.JsonReader;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -29,11 +31,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import com.cnsworder.transgo.GlobalData;
 import com.google.zxing.Result;
@@ -49,6 +58,7 @@ import com.cnsworder.qrcodescanner.qrcode.view.QrCodeFinderView;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -72,6 +82,8 @@ public class QrCodeActivity extends Activity implements Callback, OnClickListene
     private ListView postOrderView;
     private ArrayList<CharSequence> orderList;
     private final DecodeManager mDecodeManager = new DecodeManager();
+    String order_id;
+    String exp_id;
     /**
      * 声音和振动相关参数
      */
@@ -128,6 +140,7 @@ public class QrCodeActivity extends Activity implements Callback, OnClickListene
         mQrCodeFinderView = (QrCodeFinderView) findViewById(R.id.qr_code_view_finder);
         mSurfaceView = (SurfaceView) findViewById(R.id.qr_code_preview_view);
         final EditText exp_id_view = (EditText) findViewById(R.id.exp_id);
+        final EditText order_id_view = (EditText) findViewById(R.id.order_id);
         //mLlFlashLight = findViewById(R.id.qr_code_ll_flash_light);
         mHasSurface = false;
         mIvFlashLight.setOnClickListener(this);
@@ -142,23 +155,61 @@ public class QrCodeActivity extends Activity implements Callback, OnClickListene
         postButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String exp_id = exp_id_view.getText().toString();
+                exp_id = exp_id_view.getText().toString();
+                order_id = order_id_view.getText().toString();
                 if (!exp_id.isEmpty()) {
-                    HttpGet request = new HttpGet(GlobalData.webServer);
-                    HttpClient client =  new DefaultHttpClient();
-                    try {
-                        HttpResponse response = client.execute(request);
-                        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                            orderList.add(exp_id);
-                            postOrderView.deferNotifyDataSetChanged();
-                        }
-                    } catch (Exception e) {
-
-                    }
+                    new Thread(runnable).start();
                 }
             }
         });
     }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            String val = data.getString("value");
+            Log.i("xx","请求结果:" + val);
+
+            orderList.add(val);
+            postOrderView.deferNotifyDataSetChanged();
+        }
+    };
+
+    Runnable runnable = new Runnable(){
+        @Override
+        public void run() {
+            boolean resultFlag = false;
+            HttpPost request = new HttpPost(GlobalData.postOrder);
+            List<NameValuePair> pairList = new ArrayList<NameValuePair>();
+            pairList.add(new BasicNameValuePair("exp_id", exp_id));
+            pairList.add(new BasicNameValuePair("order", order_id));
+            try {
+                HttpEntity entity = new UrlEncodedFormEntity(pairList, "utf-8");
+                request.setEntity(entity);
+                HttpClient client =  new DefaultHttpClient();
+                HttpResponse response = client.execute(request);
+                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    String resultEntity = EntityUtils.toString(response.getEntity());
+                    JSONObject json = new JSONObject(resultEntity);
+                    String result = json.get("result").toString();
+                    if (result.equals("true")) {
+                        resultFlag = true;
+                    }
+                }
+            } catch (Exception e) {
+                Log.d("HTTP", e.getMessage().toString());
+            }
+            if (resultFlag) {
+                Message msg = new Message();
+                Bundle data = new Bundle();
+                data.putString("value", order_id);
+                msg.setData(data);
+                handler.sendMessage(msg);
+            }
+        }
+    };
 
     private ArrayList orderData() {
         if (orderList == null) {

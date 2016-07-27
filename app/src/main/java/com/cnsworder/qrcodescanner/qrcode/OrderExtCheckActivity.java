@@ -126,7 +126,7 @@ public class OrderExtCheckActivity extends QrCodeActivity implements Callback, O
         tvPic.setOnClickListener(this);
 
         tvPic.setOnClickListener(this);
-        Button checkButton = (Button) findViewById(R.id.check_button);
+        Button checkButton = (Button) findViewById(R.id.return_ok);
         checkButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

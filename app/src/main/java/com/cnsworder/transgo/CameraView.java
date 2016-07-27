@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -160,13 +161,20 @@ public class CameraView extends Activity implements SurfaceHolder.Callback {
 				try {
 					Date date = new Date();
 					File imagePath = new File(GlobalData.imagePath);
+					String savePath = GlobalData.imagePath;
 
 					if (!imagePath.exists()) {
-						imagePath.mkdirs();
+						boolean result = imagePath.mkdirs();
+						if (!result) {
+							Log.e("Error", "mkdir");
+							savePath = GlobalData.basePath;
+							GlobalData.imagePath = GlobalData.basePath;
+						}
 					}
-					GlobalData.imageName = date.getTime() + ".tgo";
-					FileOutputStream out = new FileOutputStream(
-							GlobalData.imagePath + GlobalData.imageName);
+					GlobalData.imageName = "/" + date.getTime() + ".tgo";
+					String imageFile = savePath + GlobalData.imageName;
+					new File(imageFile).createNewFile();
+					FileOutputStream out = new FileOutputStream(imageFile);
 					out.write(data);
 					out.flush();
 					out.close();
