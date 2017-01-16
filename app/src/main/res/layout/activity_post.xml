@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/qr_code_header_bar"
+        android:id="@+id/code_header_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
         android:background="@android:color/black">
@@ -19,7 +19,7 @@
             android:id="@+id/textView4" />
 
         <TextView
-            android:id="@+id/qr_code_header_black_pic"
+            android:id="@+id/code_header_black_pic"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -32,7 +32,7 @@
             android:visibility="invisible" />
 
         <ImageView
-            android:id="@+id/qr_code_iv_flash_light"
+            android:id="@+id/code_iv_flash_light"
             android:layout_width="80px"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -44,33 +44,33 @@
     </RelativeLayout>
 
     <SurfaceView
-        android:id="@+id/qr_code_preview_view"
+        android:id="@+id/code_preview_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/qr_code_header_bar"
+        android:layout_below="@id/code_header_bar"
         android:layout_gravity="top"
         android:visibility="visible"/>
 
     <com.cnsworder.qrcodescanner.qrcode.view.QrCodeFinderView
-        android:id="@+id/qr_code_view_finder"
+        android:id="@+id/code_view_finder"
         android:layout_width="match_parent"
         android:layout_height="300px"
-        android:layout_below="@id/qr_code_header_bar"
+        android:layout_below="@id/code_header_bar"
         android:layout_centerInParent="true"
         android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/qr_code_view_finder"
+        android:layout_below="@id/code_view_finder"
         android:background="@color/qr_code_white"
         android:orientation="vertical">
 
         <View
-            android:id="@+id/qr_code_view_background"
+            android:id="@+id/code_view_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/qr_code_header_bar"
+            android:layout_below="@id/code_header_bar"
             android:background="@android:color/black"
             android:visibility="gone"/>
 
@@ -140,8 +140,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="分派"
-                android:id="@+id/post_button"
+                android:id="@+id/exp_post_button"
                 android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"

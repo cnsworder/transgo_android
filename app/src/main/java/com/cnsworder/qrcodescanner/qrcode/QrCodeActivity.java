@@ -139,8 +139,8 @@ public class QrCodeActivity extends Activity implements Callback, OnClickListene
         //mTvFlashLightText = (TextView) findViewById(R.id.qr_code_tv_flash_light);
         mQrCodeFinderView = (QrCodeFinderView) findViewById(R.id.qr_code_view_finder);
         mSurfaceView = (SurfaceView) findViewById(R.id.qr_code_preview_view);
-        final EditText exp_id_view = (EditText) findViewById(R.id.exp_id);
-        final EditText order_id_view = (EditText) findViewById(R.id.order_id);
+        final EditText exp_id_view = (EditText) findViewById(R.id.qr_exp_id);
+        final EditText order_id_view = (EditText) findViewById(R.id.qr_order_id);
         //mLlFlashLight = findViewById(R.id.qr_code_ll_flash_light);
         mHasSurface = false;
         mIvFlashLight.setOnClickListener(this);
@@ -148,7 +148,10 @@ public class QrCodeActivity extends Activity implements Callback, OnClickListene
 
         postOrderView = (ListView) findViewById(R.id.qr_order_list_view);
         orderList = orderData();
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,  R.layout.order_list_item, R.id.order_item,orderList);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,
+                R.layout.order_list_item,
+                R.id.order_item,
+                orderList);
         postOrderView.setAdapter(adapter);
 
         Button postButton = (Button) findViewById(R.id.qr_post_button);

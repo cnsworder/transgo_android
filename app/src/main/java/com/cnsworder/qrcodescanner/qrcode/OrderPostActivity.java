@@ -1,6 +1,5 @@
 package com.cnsworder.qrcodescanner.qrcode;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,11 +21,11 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +46,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -57,6 +55,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -84,7 +83,8 @@ public class OrderPostActivity extends QrCodeActivity implements Callback, OnCli
     private QrCodeFinderView mQrCodeFinderView;
     private SurfaceView mSurfaceView;
     private ListView postOrderView;
-    private ArrayList<String> orderList;
+    private ArrayList<HashMap<String, String>> orderList;
+    private Button postButton;
     private final DecodeManager mDecodeManager = new DecodeManager();
     /**
      * 声音和振动相关参数
@@ -123,7 +123,7 @@ public class OrderPostActivity extends QrCodeActivity implements Callback, OnCli
         boolean hasHardware = checkCameraHardWare(this);
         if (hasHardware) {
             if (!hasCameraPermission()) {
-                findViewById(R.id.qr_code_view_background).setVisibility(View.VISIBLE);
+                findViewById(R.id.code_view_background).setVisibility(View.VISIBLE);
                 mQrCodeFinderView.setVisibility(View.GONE);
                 mPermissionOk = false;
             } else {
@@ -136,22 +136,27 @@ public class OrderPostActivity extends QrCodeActivity implements Callback, OnCli
     }
 
     private void initView() {
-        TextView tvPic = (TextView) findViewById(R.id.qr_code_header_black_pic);
-        mIvFlashLight = (ImageView) findViewById(R.id.qr_code_iv_flash_light);
-        //mTvFlashLightText = (TextView) findViewById(R.id.qr_code_tv_flash_light);
-        mQrCodeFinderView = (QrCodeFinderView) findViewById(R.id.qr_code_view_finder);
-        mSurfaceView = (SurfaceView) findViewById(R.id.qr_code_preview_view);
-        //mLlFlashLight = findViewById(R.id.qr_code_ll_flash_light);
+        TextView tvPic = (TextView) findViewById(R.id.code_header_black_pic);
+        mIvFlashLight = (ImageView) findViewById(R.id.code_iv_flash_light);
+        //mTvFlashLightText = (TextView) findViewById(R.id.code_tv_flash_light);
+        mQrCodeFinderView = (QrCodeFinderView) findViewById(R.id.code_view_finder);
+        mSurfaceView = (SurfaceView) findViewById(R.id.code_preview_view);
+        //mLlFlashLight = findViewById(R.id.code_ll_flash_light);
         mHasSurface = false;
         mIvFlashLight.setOnClickListener(this);
         tvPic.setOnClickListener(this);
         final EditText exp_id_view = (EditText) findViewById(R.id.exp_id);
+        postButton = (Button) findViewById(R.id.exp_post_button);
 
         postOrderView = (ListView) findViewById(R.id.post_order_list_view);
         orderList = orderData();
-        postOrderView.setAdapter(new ArrayAdapter<>(this, R.layout.order_list_item,  R.id.order_item, orderList));
+        //postOrderView.setAdapter(new ArrayAdapter<>(this, R.layout.order_list_item,  R.id.order_item, orderList));
+        String[] from = {"order", "exp"};
+        int[] to = {R.id.order_show, R.id.exp_show};
+        SimpleAdapter adapter = new SimpleAdapter(this, orderList, R.layout.listview, from, to);
+        postOrderView.setAdapter(adapter);
 
-        Button postButton = (Button) findViewById(R.id.qr_post_button);
+
         postButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,9 +170,12 @@ public class OrderPostActivity extends QrCodeActivity implements Callback, OnCli
 
     private ArrayList orderData() {
         if (orderList == null) {
-            orderList = new ArrayList();
+            orderList = new ArrayList<>();
         }
-        orderList.add("xxx");
+        HashMap map = new HashMap<String, String>();
+        map.put("order", "123");
+        map.put("exp", "222");
+        orderList.add(map);
         return orderList;
     }
 
@@ -179,7 +187,10 @@ public class OrderPostActivity extends QrCodeActivity implements Callback, OnCli
             String val = data.getString("value");
             Log.i("xx","请求结果:" + val);
 
-            orderList.add(val);
+            HashMap map = new HashMap();
+            map.put("exp", exp_id);
+            map.put("order", order_id);
+            orderList.add(map);
             postOrderView.deferNotifyDataSetChanged();
         }
     };
@@ -311,7 +322,7 @@ public class OrderPostActivity extends QrCodeActivity implements Callback, OnCli
         mQrCodeFinderView.setVisibility(View.VISIBLE);
         mSurfaceView.setVisibility(View.VISIBLE);
         //mLlFlashLight.setVisibility(View.VISIBLE);
-        findViewById(R.id.qr_code_view_background).setVisibility(View.GONE);
+        findViewById(R.id.code_view_background).setVisibility(View.GONE);
         if (mCaptureActivityHandler == null) {
             mCaptureActivityHandler = new CaptureActivityHandler(this);
         }
@@ -394,14 +405,14 @@ public class OrderPostActivity extends QrCodeActivity implements Callback, OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.qr_code_iv_flash_light:
+            case R.id.code_iv_flash_light:
                 if (mNeedFlashLightOpen) {
                     turnFlashlightOn();
                 } else {
                     turnFlashLightOff();
                 }
                 break;
-            case R.id.qr_code_header_black_pic:
+            case R.id.code_header_black_pic:
                 if (!hasCameraPermission()) {
                     mDecodeManager.showPermissionDeniedDialog(this);
                 } else {
@@ -423,14 +434,14 @@ public class OrderPostActivity extends QrCodeActivity implements Callback, OnCli
 
     private void turnFlashlightOn() {
         mNeedFlashLightOpen = false;
-        //mTvFlashLightText.setText(getString(R.string.qr_code_close_flash_light));
+        //mTvFlashLightText.setText(getString(R.string.code_close_flash_light));
         mIvFlashLight.setBackgroundResource(R.drawable.flashlight_turn_off);
         CameraManager.get().setFlashLight(true);
     }
 
     private void turnFlashLightOff() {
         mNeedFlashLightOpen = true;
-        //mTvFlashLightText.setText(getString(R.string.qr_code_open_flash_light));
+        //mTvFlashLightText.setText(getString(R.string.code_open_flash_light));
         mIvFlashLight.setBackgroundResource(R.drawable.flashlight_turn_on);
         CameraManager.get().setFlashLight(false);
     }
